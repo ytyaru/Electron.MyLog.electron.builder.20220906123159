@@ -1,0 +1,51 @@
+{
+  "name": "electron-github-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/js/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-bilder build -lmw",
+    "build_linux ": "electron-bilder build -l",
+    "build_mac": "electron-bilder build -m",
+    "build_win": "electron-bilder build -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "build": {
+    "appId": "electron.mylog",
+    "productName": "electron.mylog",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "**/*",
+      "src/db/mylog.db"
+    ],
+    "mac": {
+      "icon": "assets/mac/icon.icns",
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "icon": "assets/win/icon.ico",
+      "target": "nsis"
+    },
+    "nsis":{
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^20.0.2",
+    "electron-builder": "^23.3.3"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "electron-fetch": "^1.7.4",
+    "sql.js": "^1.7.0"
+  }
+}

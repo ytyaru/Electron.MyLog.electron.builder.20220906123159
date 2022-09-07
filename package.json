@@ -5,10 +5,11 @@
   "main": "src/js/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-bilder build -lmw",
-    "build_linux ": "electron-bilder build -l",
-    "build_mac": "electron-bilder build -m",
-    "build_win": "electron-bilder build -w",
+    "build": "electron-builder build",
+    "build_all": "electron-builder build -lmw",
+    "build_linux ": "electron-builder build -l",
+    "build_mac": "electron-builder build -m",
+    "build_win": "electron-builder build -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "build": {

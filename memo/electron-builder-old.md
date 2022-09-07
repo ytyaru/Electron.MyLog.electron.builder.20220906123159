@@ -49,11 +49,10 @@ npm i -D electron-builder
   "main": "src/js/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder build",
-    "build_all": "electron-builder build -lmw",
-    "build_linux ": "electron-builder build -l",
-    "build_mac": "electron-builder build -m",
-    "build_win": "electron-builder build -w",
+    "build": "electron-bilder build -lmw",
+    "build_linux ": "electron-bilder build -l",
+    "build_mac": "electron-bilder build -m",
+    "build_win": "electron-bilder build -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "build": {
@@ -63,8 +62,10 @@ npm i -D electron-builder
       "output": "build"
     },
     "files": [
-      "**/*",
-      "src/db/mylog.db"
+      "index.html",
+      "src",
+      "package.json",
+      "package-lock.json"
     ],
     "mac": {
       "icon": "assets/mac/icon.icns",
@@ -100,91 +101,14 @@ npm i -D electron-builder
 
 ```javascript
   "scripts": {
-    "build": "electron-builder build",
-    "build_all": "electron-builder build -lmw",
-    "build_linux ": "electron-builder build -l",
-    "build_mac": "electron-builder build -m",
-    "build_win": "electron-builder build -w",
+    "start": "electron .",
+    "build": "electron-bilder build -lmw",
+    "build_linux ": "electron-bilder build -l",
+    "build_mac": "electron-bilder build -m",
+    "build_win": "electron-bilder build -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
 ```
-
-　`npm run build`などで実行できる。
-
-　`npm start`は`run`なしで実行できるのに、なぜ`build`は`run`が必要なのだろう？　謎。
-
-　`electron-builder`の引数は以下のとおり。
-
-第一引数|結果
---------|----
-`なし`|実行したOSに合った実行形式ファイルを作成する
-`-l`|Linux用の実行形式ファイルを作成する
-`-m`|Mac用の実行形式ファイルを作成する
-`-w`|Windows用の実行形式ファイルを作成する
-`-lmw`|Linux,Mac,Windows用の実行形式ファイルを作成する
-
-#### electron-builderヘルプ
-
-```sh
-./node_modules/.bin/electron-builder --help
-```
-<details><summary>ヘルプ</summary>
-
-```sh
-electron-builder
-
-Build
-
-コマンド:
-  electron-builder build                    Build                   [デフォルト]
-  electron-builder install-app-deps         Install app deps
-  electron-builder node-gyp-rebuild         Rebuild own native code
-  electron-builder create-self-signed-cert  Create self-signed code signing cert
-                                            for Windows apps
-  electron-builder start                    Run application in a development
-                                            mode using electron-webpack
-
-Building:
-  -m, -o, --mac, --macos       Build for macOS, accepts target list (see
-                               https://goo.gl/5uHuzj).                    [配列]
-  -l, --linux                  Build for Linux, accepts target list (see
-                               https://goo.gl/4vwQad)                     [配列]
-  -w, --win, --windows         Build for Windows, accepts target list (see
-                               https://goo.gl/jYsTEJ)                     [配列]
-      --x64                    Build for x64                              [真偽]
-      --ia32                   Build for ia32                             [真偽]
-      --armv7l                 Build for armv7l                           [真偽]
-      --arm64                  Build for arm64                            [真偽]
-      --universal              Build for universal                        [真偽]
-      --dir                    Build unpacked dir. Useful to test.        [真偽]
-      --prepackaged, --pd      The path to prepackaged app (to pack in a
-                               distributable format)
-      --projectDir, --project  The path to project directory. Defaults to
-                               current working directory.
-  -c, --config                 The path to an electron-builder config. Defaults
-                               to `electron-builder.yml` (or `json`, or
-                               `json5`), see https://goo.gl/YFRJOM
-
-Publishing:
-  -p, --publish  Publish artifacts, see https://goo.gl/tSFycD
-       [選択してください: "onTag", "onTagOrDraft", "always", "never", undefined]
-
-Other:
-      --help     ヘルプを表示                                             [真偽]
-      --version  バージョンを表示                                         [真偽]
-
-例:
-  electron-builder -mwl                     build for macOS, Windows and Linux
-  electron-builder --linux deb tar.xz       build deb and tar.xz for Linux
-  electron-builder --win --ia32             build for Windows ia32
-  electron-builder                          set package.json property `foo` to
-  -c.extraMetadata.foo=bar                  `bar`
-  electron-builder                          configure unicode options for NSIS
-  --config.nsis.unicode=false
-
-See https://electron.build for more documentation.
-```
-
-</details>
 
 ### ビルド設定
 
@@ -196,8 +120,10 @@ See https://electron.build for more documentation.
       "output": "build"
     },
     "files": [
-      "**/*",
-      "src/db/mylog.db"
+      "index.html",
+      "src",
+      "package.json",
+      "package-lock.json"
     ],
     "mac": {
       "icon": "assets/mac/icon.icns",
@@ -215,197 +141,6 @@ See https://electron.build for more documentation.
     }
   },
 ```
-
-　なぜか`src/db/mylog.db`ファイルがビルドに含まれない。
-
-# ビルド
-
-```sh
-npm run build
-```
-```sh
-> electron-github-api@1.0.0 build
-> electron-builder build
-
-  • electron-builder  version=23.3.3 os=5.10.103-v7l+
-  • loaded configuration  file=package.json ("build" field)
-  • description is missed in the package.json  appPackageFile=/tmp/work/Electron.MyLog.electron.builder.20220906123159/package.json
-  • writing effective config  file=build/builder-effective-config.yaml
-  • packaging       platform=linux arch=armv7l electron=20.0.3 appOutDir=build/linux-armv7l-unpacked
-  • building        target=snap arch=armv7l file=build/electron-github-api_1.0.0_armhf.snap
-  • building        target=AppImage arch=armv7l file=build/electron.mylog-1.0.0-armv7l.AppImage
-  • application Linux category is set to default "Utility"  reason=linux.category is not set and cannot map from macOS docs=https://www.electron.build/configuration/linux
-  • default Electron icon is used  reason=application icon is not set
-  • application Linux category is set to default "Utility"  reason=linux.category is not set and cannot map from macOS docs=https://www.electron.build/configuration/linux
-  ⨯ cannot execute  cause=exit status 1
-                    errorOut=/home/pi/.cache/electron-builder/appimage/appimage-12.0.1/linux-arm32/mksquashfs: Compressor "xz" is not supported!
-    /home/pi/.cache/electron-builder/appimage/appimage-12.0.1/linux-arm32/mksquashfs: Compressors available:
-    	gzip (default)
-    
-                    command=/home/pi/.cache/electron-builder/appimage/appimage-12.0.1/linux-arm32/mksquashfs /home/pi/.cache/electron-builder/snap/snap-template-electron-4.0-1-armhf/lib /home/pi/.cache/electron-builder/snap/snap-template-electron-4.0-1-armhf/desktop-gnome-specific.sh /home/pi/.cache/electron-builder/snap/snap-template-electron-4.0-1-armhf/desktop-common.sh /home/pi/.cache/electron-builder/snap/snap-template-electron-4.0-1-armhf/data-dir /home/pi/.cache/electron-builder/snap/snap-template-electron-4.0-1-armhf/usr /home/pi/.cache/electron-builder/snap/snap-template-electron-4.0-1-armhf/desktop-init.sh /home/pi/.cache/electron-builder/snap/snap-template-electron-4.0-1-armhf/gnome-platform /home/pi/.cache/electron-builder/snap/snap-template-electron-4.0-1-armhf/.DS_Store /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/__snap-armhf/command.sh /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/__snap-armhf/scripts /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/__snap-armhf/meta /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/electron-github-api /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/resources /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/chrome_100_percent.pak /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/snapshot_blob.bin /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/chrome_200_percent.pak /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/chrome_crashpad_handler /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/v8_context_snapshot.bin /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/vk_swiftshader_icd.json /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/libvulkan.so.1 /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/libEGL.so /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/libvk_swiftshader.so /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/libGLESv2.so /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/libffmpeg.so /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/icudtl.dat /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/resources.pak /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/linux-armv7l-unpacked/locales /tmp/work/Electron.MyLog.electron.builder.20220906123159/build/electron-github-api_1.0.0_armhf.snap -no-progress -quiet -noappend -comp xz -no-xattrs -no-fragments -all-root
-                    workingDir=
-```
-
-## ビルド出力確認
-
-　`package.json`の`build`設定で以下のように出力先をセットしていた。ここにバイナリが出力される。
-
-```javascript
-    "directories": {
-      "output": "build"
-    },
-```
-
-　ルート配下にある`build`ディレクトリのファイル一覧。
-
-```sh
-$ ls -1
-__snap-armhf
-builder-debug.yml
-builder-effective-config.yaml
-electron.mylog-1.0.0-armv7l.AppImage
-linux-armv7l-unpacked
-```
-
-# 実行確認
-
-　拡張子`AppImage`が実行形式ファイル。
-
-　GUIファイルエクスプローラで実行しようとすると以下ダイアログが出るので、<kbd>実行</kbd>ボタンを押す。
-
-```
-このファイル'electron.mylog-1.0.0-armv7l.AppImage'は実行可能ファイルです。実行しますか？
-```
-
-　アプリが起動した
-
-## 実行時エラー
-
-　アプリの開発者ツールのコンソールにて、以下エラーが表示された。
-
-
-```
-Uncaught (in promise) Error: Error invoking remote method 'loadDb': Error: ENOENT: no such file or directory, open 'src/db/mylog.db'
-```
-
-　`src/db/mylog.db`ファイルが存在しないらしい。
-
-　設定は間違っていないはず。[file-patterns][]を参考にし、`package.json`の`files`を以下のように修正してから再ビルドしても同じだった。
-
-```javascript
-    "files": [
-      "**/*"
-    ],
-```
-
-　以下のように修正して再ビルドしても変わらなかった。
-
-```javascript
-    "files": [
-      "**/*",
-      "src/db/mylog.db"
-    ],
-```
-
-　そこで、実行ファイル`electron.mylog-1.0.0-armv7l.AppImage`のディレクトリ配下に`src/db/mylog.db`をコピーしてやると成功した。
-
-
-
-
-
-
-
-
-
-
-
-# 試行錯誤
-
-## エラー1
-
-```sh
-npm build_linux
-```
-```sh
-Unknown command: "build_linux"
-
-Did you mean one of these?
-    npm run build_linux  # run the "build_linux " package script
-    npm run build_win # run the "build_win" package script
-
-To see a list of supported npm commands, run:
-  npm help
-```
-
-　え、`package.json`の`scripts`でコマンドを作れるのではなかったの？　なんか勘違いしてた？
-
-　ログに`npm run build_linux`とか出てるので、次はそれを叩いてみよう。
-
-## エラー2
-
-　`npx`ってのもある。`package.json`に書いたコマンドをそのまま渡してみる。
-
-```sh
-$ npx run electron-bilder build -l
-Need to install the following packages:
-  run
-Ok to proceed? (y) 
-```
-```sh
-Watching /tmp/work/Electron.MyLog.electron.builder.20220906123159 and all sub-directories not excluded by your .gitignore. Will not monitor dotfiles.
-Found & ignored ./node_modules ; is listed in .gitignore
-Found & ignored ./src/css/styles.css ; has ignored extension
-Found & ignored ./src/css/toastify.css ; has ignored extension
-Found & ignored ./src/css/toot-dialog.css ; has ignored extension
-Found & ignored ./src/css/transaction.css ; has ignored extension
-Found & ignored ./src/css/ui.css ; has ignored extension
-Found & ignored ./src/db/mylog.db ; has ignored extension
-Found & ignored ./src/js/app/github/export/style.css ; has ignored extension
-Found & ignored ./src/lib/tingle/0.16.0/tingle.css ; has ignored extension
-Found & ignored ./src/lib/toastify/1.11.2/min.css ; has ignored extension
-
-Starting: electron-bilder build -l
-node:internal/modules/cjs/loader:936
-  throw err;
-  ^
-
-Error: Cannot find module '/tmp/work/Electron.MyLog.electron.builder.20220906123159/electron-bilder'
-    at Function.Module._resolveFilename (node:internal/modules/cjs/loader:933:15)
-    at Function.Module._load (node:internal/modules/cjs/loader:778:27)
-    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:77:12)
-    at node:internal/main/run_main_module:17:47 {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: []
-}
-```
-
-　ここでフリーズした。モジュールが見つからない？　なんのこっちゃ。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # 実行
 
